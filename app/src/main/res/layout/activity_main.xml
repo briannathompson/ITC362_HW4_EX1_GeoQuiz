@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--Pg 13 Added Code-->
-<!--Pg 21 Added android:id="@id/_button" code to buttons to generate a resource ID for them-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--Pg 37 Listing 2.2 Add and delete code-->
+<!--Added xmlns:tools="http://schemas.android.com/tools"-->
+<!--Pg 48 Listing 2.14: Adding an icon to the next button, xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
+<!-- Added @+id/question_text_view", android:gravity="center", and tools:text="@string/question_australia"-->
+<!-- Removed android:text="@string/question_text"-->
     <TextView
+        android:id="@+id/question_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="24dp"
-        android:text="@string/question_text" />
+        tools:text="@string/question_australia" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,5 +40,17 @@
             android:text="@string/false_button" />
 
     </LinearLayout>
+
+<!--Pg 37: Created Next Button-->
+    <!--Pg 48 Listing 2.14: Adding an icon to the next button
+        app:icon="@drawable/arrow_right"
+        app:iconGravity="end"-->
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next_button"
+        app:icon="@drawable/arrow_right"
+        app:iconGravity="end"/>
 
 </LinearLayout>
