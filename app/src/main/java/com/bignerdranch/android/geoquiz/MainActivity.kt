@@ -2,17 +2,17 @@ package com.bignerdranch.android.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
-import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding // Pg40 Listing 2.7
+import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 
+// 3.1 (p57): Adding a TAG constant
+private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
-    // Pg40 Listing 2.7: Initializing ActivityMainBinding
     private lateinit var binding: ActivityMainBinding
 
-    // Pg 39 Listing 2.5: Adding a Question List
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
@@ -25,57 +25,59 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
-        // Pg 40 Listing 2.7: Initializing ActivityMainBinding
+        // 3.2 (p57): Adding a log statement to onCreate(Bundle?)
+        Log.d(TAG, "onCreate(Bundle?) called")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Removed true and false button declarations and instantiations
-
-        // Pg 41 Listing 2.8: Using ActivityMainBinding, added binding to the front
         binding.trueButton.setOnClickListener { view: View ->
-            /*Toast.makeText(
-               this,
-                R.string.correct_toast,
-                Toast.LENGTH_SHORT
-            ).show()*/
-            // Pg 44 Listing 2.13: Calling checkAnswer(Boolean)
             checkAnswer(true)
         }
-        // Pg 41 Listing 2.8: Using ActivityMainBinding, added binding to the front
+
         binding.falseButton.setOnClickListener { view: View ->
-            /*Toast.makeText(
-                this,
-                R.string.incorrect_toast,
-                Toast.LENGTH_SHORT
-            ).show()*/
-            // Pg 44 Listing 2.13: Calling checkAnswer(Boolean)
             checkAnswer(false)
         }
 
-        //Pg 42 Listing 2.10: Wiring up the new button
+
         binding.nextButton.setOnClickListener{
             currentIndex = (currentIndex + 1) % questionBank.size
-            //val questionTextResId = questionBank[currentIndex].textResId
-            //binding.questionTextView.setText(questionTextResId)
-            // Pg 43 Listing 2.11: Encapsulating with a Function; moved the above to a function
             updateQuestion()
-
         }
-        // Pg 42 Listing 2.9: Wiring Up the TextView
-        //val questionTextResId = questionBank[currentIndex].textResId
-        //binding.questionTextView.setText(questionTextResId)
-        // Pg 43 Listing 2.11: Encapsulating with a Function; moved the above to a function
+
         updateQuestion()
     }
 
-    // Pg 43 Listing 2.11: Encapsulating with a Function
+    // 3.3 (p58): Overriding  more lifecycle functions
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
+    }
+
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         binding.questionTextView.setText(questionTextResId)
     }
 
-    // Pg 44 Listing 2.12: Adding checkAnswer(Boolean)
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
 
