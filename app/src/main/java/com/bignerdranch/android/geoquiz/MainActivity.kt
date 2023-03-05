@@ -5,30 +5,28 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 
-// 3.1 (p57): Adding a TAG constant
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true))
+    // 4.3: Accessing the ViewModel
+    private val quizViewModel: QuizViewModel by viewModels()
 
-    private var currentIndex = 0
+// 4.4 Cutting model data from activity
+    // Moved questionBank and currentIndex into QuizViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 3.2 (p57): Adding a log statement to onCreate(Bundle?)
         Log.d(TAG, "onCreate(Bundle?) called")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 4.3: Accessing the ViewModel
+        Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
 
         binding.trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
@@ -40,14 +38,15 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.nextButton.setOnClickListener{
-            currentIndex = (currentIndex + 1) % questionBank.size
+            // 4.7: Updating the question through QuizViewModel
+            // Removed: currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()      // Added
             updateQuestion()
         }
 
         updateQuestion()
     }
 
-    // 3.3 (p58): Overriding  more lifecycle functions
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart() called")
@@ -74,12 +73,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        // 4.7: Updating the question through QuizViewModel
+        // Removed: val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText       // Added
         binding.questionTextView.setText(questionTextResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        // 4.7: Updating the question through QuizViewModel
+        // Removed: val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer     // Added
 
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
